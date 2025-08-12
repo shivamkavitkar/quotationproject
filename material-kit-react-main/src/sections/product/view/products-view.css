@@ -1,0 +1,52 @@
+/* src/sections/product/view/products-view.css */
+
+/* --- Variable Definitions --- */
+:root {
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --primary-color: #4A90E2; /* Professional blue */
+  --text-color-dark: #2c3e50;
+  --text-color-light: #5a6268;
+  --border-color: #dee2e6;
+  --background-paper: #ffffff;
+  --background-light: #f8f9fa;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --border-radius: 8px;
+}
+
+/* --- Main Header --- */
+.main-content-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.hamburger-icon {
+  font-size: 1.75rem;
+  color: var(--text-color-light);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.hamburger-icon:hover {
+  color: var(--text-color-dark);
+}
+
+.main-title-text {
+  /* Using this class to override MUI Typography styles if needed */
+  font-weight: 600;
+  color: var(--text-color-dark);
+}
+
+/* --- Specification Input Fields in Table --- */
+/* This stops the row click event when interacting with spec inputs */
+.specification-cell {
+  padding: 8px !important;
+}
+
+.specification-inputs-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px; /* Give the inputs a minimum width */
+}

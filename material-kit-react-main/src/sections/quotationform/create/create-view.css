@@ -1,0 +1,526 @@
+/* src/sections/quotationform/create/create-view.css */
+
+/* --- Variable Definitions --- */
+.quotation-form-container {
+  --primary-color: #4A90E2; /* A softer, professional blue */
+  --primary-color-dark: #357ABD;
+  --text-color-dark: #2c3e50; /* A dark slate for headings */
+  --text-color-body: #495057; /* A softer grey for body text */
+  --border-color: #dee2e6;
+  --background-light: #f8f9fa; /* Light grey background for sections */
+  --background-white: #ffffff;
+  --success-color: #5cb85c;
+  --danger-color: #d9534f;
+  --secondary-color: #6c757d;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --border-radius: 8px;
+}
+
+/* --- Main Container --- */
+.quotation-form-container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2.5rem; /* Using rem for better scalability */
+  margin: 0;
+  background-color: var(--background-white);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text-color-body);
+}
+
+/* --- Form Header --- */
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.form-header h1 {
+  margin: 0;
+  color: var(--text-color-dark);
+  font-size: 2em;
+  font-weight: 600;
+}
+
+.back-button {
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Sections --- */
+.form-section-main,
+.address-section,
+.product-line-items-section,
+.declaration-section {
+  margin-bottom: 2.5rem;
+  border: 1px solid #e9ecef;
+  padding: 1.5rem 2rem;
+  border-radius: var(--border-radius);
+  background-color: var(--background-light);
+  box-shadow: var(--box-shadow);
+}
+.address-section {
+  flex: 1;
+}
+
+.form-section-main h3, .address-section h3, .product-line-items-section h3 {
+  color: var(--primary-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.25em;
+  font-weight: 600;
+}
+
+/* --- Form Layout & Groups --- */
+.form-row {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color-body);
+  font-size: 0.9em;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1em;
+  box-sizing: border-box;
+  background-color: var(--background-white);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--primary-color);
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+}
+
+.form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* --- Address Section Wrapper --- */
+.address-section-wrapper {
+  display: flex;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+/* --- Product Line Items --- */
+/* src/sections/quotationform/create/create-view.css */
+
+.line-item-header {
+    display: grid;
+    /* Use the EXACT same column definition as productItem.css */
+    grid-template-columns: 40px 2.5fr 120px 2.5fr 2.5fr 1fr 0.8fr 1fr 1fr 1fr 50px;
+    gap: 15px;
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.85em;
+    color: var(--text-color-body);
+    text-transform: uppercase;
+}
+
+.line-item-header span {
+  text-align: left;
+  padding: 0 5px;
+}
+.line-item-header span:nth-child(1) { flex-basis: 5%; }
+.line-item-header span:nth-child(2) { flex: 1; } /* Product takes more space */
+.line-item-header span:nth-child(3) { flex-basis: 10%; }
+.line-item-header span:nth-child(4) { flex: 1; } /* Description */
+/* ... Adjust other columns as needed ... */
+
+.add-product-btn {
+  background-color: var(--success-color);
+  color: white;
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  margin-top: 1rem;
+  transition: all 0.2s ease;
+}
+
+.add-product-btn:hover {
+  background-color: #4cae4c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Actions & Submit --- */
+.form-actions {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.form-actions button[type="submit"] {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.8rem 2.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+}
+
+.form-actions button[type="submit"]:hover:not(:disabled) {
+  background-color: var(--primary-color-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(74, 144, 226, 0.3);
+}
+
+.form-actions button[type="submit"]:disabled {
+  background-color: #a0c3e7;
+  cursor: not-allowed;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .quotation-form-container {
+    padding: 1.5rem;
+  }
+  .form-row, .address-section-wrapper {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .line-item-header {
+    display: none;
+  }
+}
+
+/* --- Totals Section Styles --- */
+/* ========================================================= */
+/* === Layout for Activity and Totals Sections === */
+/* ========================================================= */
+
+/* The new parent container to hold both sections side-by-side */
+/* ========================================================= */
+/* === Layout for Activity and Totals Sections === */
+/* ========================================================= */
+
+/* The new parent container to hold both sections side-by-side */
+.summary-and-totals-wrapper {
+    display: flex;
+    gap: 2rem; /* Space between the left and right sections */
+    margin-top: 2rem;
+}
+
+/* --- Activity Section (Left Side) --- */
+.activity-section {
+    flex: 0 0 35%; /* चौड़ाई 35% ही रखें */
+    display: flex;
+    flex-direction: column;
+    gap: 3rem; /* ✅ यहाँ पर gap को 3rem कर दिया गया है */
+    padding: 1.5rem;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.activity-section .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.activity-section label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #495057;
+    font-size: 0.9em;
+}
+
+.activity-section textarea,
+.activity-section input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+.activity-section textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Date input को एक standard look देने के लिए */
+.activity-section input[type="date"] {
+    width: 100%;
+    align-self: auto;
+}
+
+
+/* ========================================================= */
+.totals-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers the content block */
+    gap: 1.25rem;
+    padding: 1.5rem 2rem;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.form-group-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 450px; /* Main content block width */
+    max-width: 100%;
+}
+
+.form-group-total label {
+    font-weight: 500;
+    color: #495057;
+    font-size: 0.9em;
+    width: 150px; /* Fixed width for labels */
+    text-align: left;
+    white-space: nowrap;
+}
+
+/* ✅ Main input fields will have a fixed, smaller width */
+.form-group-total input,
+.form-group-total select {
+    width: 100px; /* ✅ This sets the width to a smaller value */
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 0.9em; 
+    box-sizing: border-box;
+    /* We're using fixed width, so we don't need flex-grow */
+}
+
+/* ✅ Placeholder text styling */
+.form-group-total input::placeholder {
+    font-size: 0.8em;
+    color: #a0a0a0;
+}
+
+/* Specific styling for the GST rows */
+.gst-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 450px; /* Fixed width for this row */
+    max-width: 100%;
+}
+
+.gst-group label {
+    font-weight: 500;
+    color: #495057;
+    font-size: 0.9em;
+    width: 150px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+/* ✅ GST inputs will have specific, smaller widths */
+.gst-percent {
+    width: 40px; 
+}
+.gst-amount {
+    width: 60px; 
+}
+
+/* Highlighting the Grand Total and Balance */
+.grand-total,
+.balance-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 450px;
+    max-width: 100%;
+}
+
+.grand-total label,
+.balance-total label {
+    font-weight: bold;
+    color: #2c3e50;
+    width: 150px;
+    text-align: left;
+}
+
+/* ✅ Grand Total and Balance inputs will have a smaller width */
+.grand-total input,
+.balance-total input {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #0d6efd;
+    width: 100px; /* Smaller width for emphasis */
+}
+
+/* Transport/Courier input and select styling */
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* ✅ No flex-grow, use fixed width for both elements */
+    width: 100px; 
+}
+.input-group input {
+    width: 45px; /* Adjusting sub-input width */
+}
+.input-group select {
+    width: 50px; /* Adjusting select width */
+}
+
+/* This is the container for the search input. It's crucial for positioning the dropdown. */
+.form-group {
+    position: relative;
+}
+
+/* --- The Search Dropdown --- */
+.search-results-list {
+    list-style-type: none; /* Removes bullet points */
+    padding: 0;
+    margin: 5px 0 0 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+    /* Positioning */
+    position: absolute;
+    width: 100%;
+    top: 100%; /* Places it right below the form-group */
+    left: 0;
+    z-index: 100; /* Ensures it appears on top of other elements */
+
+    /* Makes the list scrollable if there are many results */
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+/* --- Individual Search Result Items --- */
+
+
+/*
+  This is the main fix. It turns each row into a flexible container.
+*/
+/* This makes each row a flex container */
+.form-row {
+    display: flex;
+    gap: 20px; /* Space between the two boxes */
+    margin-bottom: 16px; /* Space between the rows */
+
+    /* ✅ NEW: This aligns the bottom edges of the input boxes, fixing the vertical alignment */
+    align-items: flex-end;
+}
+
+/* This makes each group take up half the space */
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* --- ✅ NEW: Force ALL input boxes to have the same height --- */
+
+/* This targets your NORMAL input boxes (like Company ID, Contact Person, etc.) */
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="email"],
+.form-group input[type="number"] {
+    height: 56px; /* This is the standard height of a Material-UI input. Adjust if you need. */
+    padding: 0 14px;
+    box-sizing: border-box; /* This is important for consistent sizing */
+}
+
+/* This specifically targets the Material-UI Autocomplete component */
+.form-group .MuiFormControl-root {
+    /* This removes the default bottom margin from MUI that can push other things down */
+    margin-bottom: 0 !important;
+}
+
+/* --- Autocomplete Dropdown Styling --- */
+
+/* Style the main list container */
+.MuiAutocomplete-popper ul.MuiAutocomplete-listbox {
+    background-color: #f9f9f9; /* Light gray background */
+    border-radius: 8px; /* Rounded corners for the list */
+    padding: 0;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+/* Style each individual list item (the company names) */
+.MuiAutocomplete-option {
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    color: #444; /* Slightly dark gray text for readability */
+    padding: 10px 15px; /* More padding for better spacing */
+    transition: background-color 0.2s ease; /* Smooth hover transition */
+    border-bottom: 1px solid #eee; /* Light divider line */
+}
+
+/* Remove the border from the last item to prevent an extra line */
+.MuiAutocomplete-option:last-child {
+    border-bottom: none;
+}
+
+/* Style the item when a user hovers over it */
+.MuiAutocomplete-option[data-focus="true"] {
+    background-color: #e3f2fd !important; /* A light blue hover effect */
+    cursor: pointer;
+}
+
+/* Style the selected item */
+.MuiAutocomplete-option[aria-selected="true"] {
+    background-color: #c9e6ff !important; /* A slightly darker blue for selected item */
+    font-weight: 500;
+}
+
+/* Make sure the text input itself is styled correctly */
+.MuiInputBase-root {
+    background-color: #fff;
+    border-radius: 4px;
+}

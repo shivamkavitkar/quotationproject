@@ -1,0 +1,399 @@
+/* src/sections/item/productItem.css */
+
+/* --- Main Product Row Layout --- */
+
+
+.product-list-header,
+.quotation-product-item {
+    display: grid;
+    /* --- YEH FINAL LAYOUT HAI ---
+     * Discount% (9th) aur Total (10th) columns ko chauda kiya gaya hai.
+    */
+    grid-template-columns: 30px 2.5fr 120px 2.5fr 1.8fr 1fr 0.8fr 1fr 1.2fr 1.5fr 60px;
+    gap: 15px;
+    align-items: start;
+}
+
+/* Header ke baaki styles waise hi rahenge */
+.product-list-header {
+    padding: 12px 0;
+    border-bottom: 2px solid #adb5bd;
+    font-weight: 600;
+    color: #343a40;
+}
+
+/* Row ke baaki styles waise hi rahenge */
+.quotation-product-item {
+    padding: 15px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* --- SIRF HEADER KE LIYE STYLES --- */
+
+
+/* Header ke har cell ke liye thodi padding adjust kar sakte hain */
+
+
+/* --- SIRF PRODUCT ROW KE LIYE STYLES --- */
+
+
+.sno-col {
+    text-align: center;
+    font-weight: bold;
+    padding-top: 12px;
+    color: #495057;
+}
+
+/* --- General Column Styles --- */
+.product-col,
+.image-col,
+.description-col,
+.specification-col,
+.price-col,
+.qty-col,
+.discount-col,
+.discount-percent-col,
+.total-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* --- General Input Styles --- */
+.product-col input,
+.description-col input,
+.description-col textarea,
+.specification-col input,
+.price-col input,
+.qty-col input,
+.discount-col input,
+.discount-percent-col input,
+.total-col input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 0.9em;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.description-col textarea {
+    min-height: 120px; /* Aap is value (90px) ko apni zaroorat ke hisaab se kam ya zyada kar sakte hain */
+    resize: vertical; /* Optional: Yeh user ko sirf upar-neeche resize karne dega */
+}
+
+.product-col input:focus,
+.description-col input:focus,
+.description-col textarea:focus,
+.specification-col input:focus,
+.price-col input:focus,
+.qty-col input:focus,
+.discount-col input:focus,
+.discount-percent-col input:focus {
+    border-color: #4A90E2;
+    /* Using --primary-color from your other file */
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+}
+
+
+/*
+============================================================
+           <<< FINAL CSS STYLES FOR DROPDOWN >>>
+============================================================
+*/
+
+.autocomplete-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.autocomplete-wrapper > input[type="text"] {
+    margin-top: 10px; /* Aap is gap ko 10px se kam ya zyada kar sakte hain */
+}
+/* --- Main Dropdown Container --- */
+.suggestions-list {
+    list-style-type: none;
+    padding: 8px;
+    margin: 5px 0 0 0;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    max-height: 350px;
+    overflow-y: auto;
+    z-index: 1000;
+    min-width: 350px;
+    position: absolute;
+    top: 105%;
+    left: 0;
+    right: 0;
+}
+
+/* --- Individual Suggestion Item (the Row) --- */
+.suggestions-list li {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    /* <<< ADD THIS LINE >>> */
+    border-bottom: 1px solid #d3d1d1;
+    /* Light horizontal line */
+    transition: background-color 0.2s ease;
+}
+
+
+.suggestions-list li:hover {
+    background-color: #f1f3f5;
+}
+
+/* --- Suggestion Image Styling (Left Side) --- */
+.suggestion-image {
+    width: 70px;
+    /* Increased width */
+    height: 70px;
+    /* Increased height */
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #111;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+/* --- Suggestion Text Details Wrapper (Right Side) --- */
+.suggestion-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow: hidden;
+}
+
+/* --- Primary Text (e.g., "METAL FOLDING CHAIR") --- */
+.suggestion-primary-text {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #D946EF;
+    /* Magenta/pink color */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+}
+
+/* --- Secondary Text (e.g., "NEW ARRIVAL") --- */
+.suggestion-secondary-text {
+    font-size: 0.8em;
+    font-weight: 600;
+    color: #6A1B9A;
+    /* Deep purple color */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+}
+
+/* --- Tertiary Text (e.g., "RESTAURANT AND CAFETERIA CHAIRS") --- */
+.suggestion-tertiary-text {
+    font-size: 0.75em;
+    font-weight: 500;
+    color: #4A90E2;
+    /* Standard blue color */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+}
+
+/*
+============================================================
+           <<< CSS FOR DROPDOWN ENDS HERE >>>
+============================================================
+*/
+
+
+/* --- Other Component Styles --- */
+.image-col {
+    display: flex;
+    flex-direction: column; /* Saare items ko upar se neeche line mein rakhega */
+    align-items: center;    /* Sabhi items ko horizontally center karega */
+    gap: 19px;               /* Items ke beech mein thoda vertical gap dega */
+}
+
+.image-wrapper {
+    width: 110px;  /* <-- BADLAV: Width badhayi */
+    height: 110px; /* <-- BADLAV: Height badhayi */
+    border: 1px dashed #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+}
+
+.image-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.placeholder-image {
+    color: #888;
+    font-size: 0.8em;
+    text-align: center;
+}
+
+.choose-file-btn,
+.remove-image-btn {
+    background-color: transparent;
+    color: #dc3545;
+    /* --- BADLAV: Size chota kiya --- */
+    font-size: 0.9em;
+    padding: 0; /* Faltu padding hata di */
+    border: none;
+    cursor: pointer;
+    line-height: 1; /* Extra line height ko control karne ke liye */
+    margin-top: -5px; /* Thoda upar adjust kiya */
+}
+
+.choose-file-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.7em;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+    background-color: #007bff;
+    color: white;
+    width: 90px; /* Width set kar di taki ajeeb na lage */
+}
+
+.choose-file-btn:hover {
+    background-color: #0056b3;
+}
+
+.remove-image-btn {
+    background-color: transparent;
+    color: #dc3545;
+    font-size: 0.9em;
+    padding: 4px;
+}
+
+.remove-image-btn:hover {
+    background-color: #f8d7da;
+}
+
+/* productItem.css */
+
+.remove-col {
+    /* --- BADLAV: Alignment ke liye Flexbox ka istemal --- */
+    display: flex;
+    justify-content: flex-end; /* Icon ko bilkul right end par bhejega */
+    align-items: center;       /* Icon ko vertically center karega */
+    /* Right side se thoda sa gap */
+    padding-right: 15px;
+}
+.remove-item-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    /* --- BADLAV: Size aur chota kiya --- */
+    font-size: 0.9em;
+    color: #dc3545;
+    transition: transform 0.2s ease, color 0.2s ease;
+    /* Faltu ki padding hata di */
+    padding: 0;
+}
+
+.remove-item-btn:hover {
+    transform: scale(1.1);
+    color: #c82333;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .quotation-product-item {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    /* Add other responsive overrides here if needed */
+}
+
+/* src/sections/item/productItem.css */
+
+.filter-dropdowns {
+    display: flex;
+    flex-direction: column;
+    /* <<--- YEH LINE ADD KAREIN */
+    gap: 8px;
+    /* Optional: Vertical gap thoda badha sakte hain */
+    margin-top: 4px;
+}
+
+.filter-dropdowns select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 0.9em;
+    background-color: #fff;
+}
+
+.global-search-wrapper {
+    margin-top: 15px;
+}
+
+.global-search-wrapper input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 0.9em;
+}
+
+.new-product-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.new-product-input {
+    flex-grow: 1;
+}
+
+.save-product-btn {
+    padding: 8px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.save-product-btn:hover {
+    background-color: #218838;
+}
+
+/* src/sections/item/productItem.css */
+
+/* Move kiye gaye HSN Code input ki styling ke liye */
+.hsn-code-input {
+  /* Height choti karne ke liye padding kam ki */
+  padding: 5px 10px;
+  font-size: 0.85em; /* Font size bhi thoda chota kar diya */
+  margin-top: 10px;  /* Upar wale search box se thoda gap */
+  width: 100%; /* Parent ke hisaab se poori width lega */
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  box-sizing: border-box;
+  height: 1.2rem;
+}

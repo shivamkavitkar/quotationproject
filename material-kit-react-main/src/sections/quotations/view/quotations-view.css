@@ -1,0 +1,1161 @@
+/* ===== Glassmorphism Container ===== */
+.quotation-list-container {
+    width: 100%;
+    min-height: 96vh;
+    box-sizing: border-box;
+    padding: 40px 25px 30px 25px;
+    margin: 0;
+    background: rgba(235, 241, 255, 0.7);
+    box-shadow: 0 12px 40px rgba(0, 68, 119, 0.13), 0 1.5px 6px rgba(54, 120, 220, 0.03);
+    backdrop-filter: blur(11px);
+    border-radius: 32px;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    position: relative;
+    z-index: 1;
+    transition: box-shadow .3s;
+}
+
+/* ===== Chic Header with Accent Ribbon ===== */
+.quotation-header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 36px;
+    position: relative;
+    min-height: 52px;
+}
+
+.quotation-header-wrapper:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 30px;
+    width: 5px;
+    background: linear-gradient(200deg, #5280ff 60%, #2ed7a7 100%);
+    border-radius: 6px;
+    z-index: 0;
+}
+
+.quotation-header-wrapper h1 {
+    position: absolute;
+    left: 52%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    font-size: 2.1rem;
+    letter-spacing: 0.02em;
+    background: linear-gradient(94deg, #182c64 60%, #2ed7a7 140%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    white-space: nowrap;
+    text-transform: uppercase;
+    z-index: 2;
+    filter: drop-shadow(0 2px 8px rgba(44, 88, 219, 0.14));
+}
+
+/* ===== Swaggy Buttons ===== */
+.go-to-products-btn,
+.create-new-btn {
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: .02em;
+    border: none;
+    border-radius: 7px;
+    transition:
+        background .2s,
+        box-shadow .21s,
+        transform .12s,
+        color .13s;
+    background: linear-gradient(90deg, #5186ff 60%, #2ed7a7 110%);
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(80, 120, 255, 0.08);
+    cursor: pointer;
+    padding: 14px 36px;
+    margin-bottom: 27px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+
+.go-to-products-btn {
+    font-size: 15px;
+    padding: 10px 22px;
+    background: linear-gradient(90deg, #00c7fa 60%, #7cffb6 110%);
+    color: #181818 !important;
+    margin: 0;
+    margin-right: 9px;
+    box-shadow: 0 2px 8px rgba(0, 199, 250, 0.11);
+}
+
+.go-to-products-btn:hover,
+.create-new-btn:hover {
+    box-shadow: 0 8px 32px 0 rgba(50, 94, 236, 0.19);
+    transform: translateY(-2px) scale(1.03) rotate(-0.5deg);
+}
+
+.create-new-btn {
+    background: linear-gradient(90deg, #33866f 40%, #182C64 100%);
+    color: #fff;
+    margin-top: 17px;
+    margin-bottom: 24px;
+}
+
+.create-new-btn::after {
+    content: '';
+    margin-left: 12px;
+    opacity: 0.68;
+    font-size: 21px;
+    vertical-align: -2px;
+    pointer-events: none;
+}
+
+/* ===== Table: Smooth Carded 3D effect ===== */
+.quotation-table {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.93);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(40, 90, 220, 0.08), 0 0.5px 2px #b8eaff27;
+    margin-top: 28px;
+    table-layout: fixed;
+    /* Column width ko control karne ke liye yeh zaroori hai */
+    word-break: break-word;
+    /* Lambe shabdon ko aagli line me todne ke liye */
+
+}
+
+.quotation-table th, .quotation-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.quotation-table th {
+    /* ... baaki styles ... */
+    border-bottom: 2px solid #a5b3c5;
+    /* Header ke liye bhi thoda dark border */
+    /* ... baaki styles ... */
+}
+
+.quotation-table thead tr {
+    /* Faint violet background color */
+    background-color: #e6e6fa;
+}
+
+.quotation-table thead th {
+    /* Dark blue text color to match the image */
+    color: #000000;
+    font-weight: bold;
+    padding: 16px 15px;
+    /* Padding ko original jaisa rakha hai */
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.quotation-table td {
+    font-size: 1.01rem;
+    color: #14365b;
+    background: none;
+    font-weight: 500;
+    border-bottom: 1px solid #c2d1e2;
+    /* Lambe text ko handle karne ke liye */
+
+}
+
+
+/* ======================================================= */
+/* YAHAN SE NAYE BADLAV SHURU HOTE HAIN */
+/* Vertical separators (faint lines) ke liye CSS */
+/* :nth-child(1), (2), (3) ka matlab hai pehle, dusre, aur teesre column par border lagana */
+.quotation-table th:nth-child(1),
+.quotation-table td:nth-child(1) {
+    width: 8%;
+    border-right: 1px solid rgba(194, 209, 226, 0.5);
+    vertical-align: top;
+}
+
+/* 2. Company & Contact Details (Yeh naya, chauda column hai) */
+.quotation-table th:nth-child(2),
+.quotation-table td:nth-child(2) {
+    width: 13%;
+    border-right: 1px solid rgba(194, 209, 226, 0.5);
+}
+
+/* 3. Total Products */
+.quotation-table th:nth-child(3),
+.quotation-table td:nth-child(3) {
+    width: 16%;
+    text-align: center;
+    border-right: 1px solid rgba(194, 209, 226, 0.5);
+}
+
+/* 4. Actions (Last column, isliye border nahi hai) */
+.quotation-table th:nth-child(4),
+.quotation-table td:nth-child(4) {
+    width: 19%;
+    border-right: 1px solid rgba(194, 209, 226, 0.5);
+}
+
+.quotation-table th:nth-child(5),
+.quotation-table td:nth-child(5) {
+    width: 31%;
+    border-right: 1px solid rgba(194, 209, 226, 0.5);
+}
+
+.quotation-table th:nth-child(6),
+.quotation-table td:nth-child(6) {
+    width: 5%;
+    border-right: 1px solid rgba(194, 209, 226, 0.5);
+}
+
+/* Last column se extra border hatane ke liye */
+/* :last-child selector se hum table ke aakhri cell ko target karte hain */
+.quotation-table th:last-child,
+.quotation-table td:last-child {
+    border-right: none;
+}
+
+/* YAHAN NAYE BADLAV KHATAM HOTE HAIN */
+/* ======================================================= */
+
+
+.quotation-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.quotation-table tbody tr {
+    transition: background 0.19s, box-shadow 0.18s;
+}
+
+.quotation-table tbody tr:hover {
+    background: linear-gradient(99deg, #f6fcff 70%, #ecf5fd 130%);
+    box-shadow: 0 2px 14px #5280ff14;
+    z-index: 1;
+    position: relative;
+}
+
+.quotation-table tbody tr:nth-child(even) {
+    background: rgba(244, 250, 255, 0.45);
+}
+
+/* ===== Action Buttons: Pill & Animated ===== */
+.quotation-table th.actions-header {
+    text-align: center;
+}
+
+/* Actions cell mein icons ko center aur vertical kiya */
+.quotation-table td.actions-cell {
+    /* `display: block` purane `display: flex` ko override karega */
+    display: block;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* Is naye container mein icons ko vertical rakha gaya hai */
+
+
+.action-btn.preview {
+    background-color: #6c757d;
+    /* Dark Grey */
+    color: #fff;
+    border: none;
+    /* Removed old border */
+}
+
+.action-btn.edit {
+    background-color: #ffc107;
+    /* Yellow */
+    color: #000;
+    /* Black text for better readability on yellow */
+    border: none;
+    /* Removed old border */
+}
+
+.action-btn.delete {
+    background-color: #dc3545;
+    /* Red */
+    color: #fff;
+    border: none;
+    /* Removed old border */
+}
+
+.action-btn:hover,
+.action-btn:focus {
+    transform: translateY(-2px);
+    /* Simple lift effect */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    outline: none;
+    opacity: 1;
+    /* Reset opacity */
+}
+
+/* ===== Micro Animation On Row Hover: Raise the Action Buttons */
+.quotation-table tbody tr:hover .action-btn {
+    transform: translateY(-1.5px) scale(1.085) rotate(-2deg);
+    box-shadow: 0 8px 22px 0 rgba(70, 210, 120, 0.16), 0 2px 9px #fff;
+}
+
+/* ===== Responsive Glassy ===== */
+@media (max-width: 900px) {
+
+    .quotation-table,
+    .quotation-table tbody,
+    .quotation-table tr,
+    .quotation-table td,
+    .quotation-table th {
+        display: block;
+    }
+
+    .quotation-table thead {
+        display: none;
+    }
+
+
+    .quotation-table tr {
+        margin-bottom: 15px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.97);
+        box-shadow: 0 1px 6px #95d1fb39;
+        overflow: hidden;
+    }
+
+    .quotation-table td {
+        text-align: right;
+        padding-left: 54%;
+        position: relative;
+        font-size: .96rem;
+        border: none;
+        margin-bottom: 8px;
+    }
+
+    .quotation-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 48%;
+        padding-left: 17px;
+        font-weight: 800;
+        color: #3376e5;
+        font-size: .97em;
+        top: 0;
+        background: none;
+        text-align: left;
+    }
+
+    .actions-cell {
+        justify-content: flex-end;
+        gap: 7px;
+    }
+
+ .quotation-header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+    .quotation-header-wrapper h1 {
+        position: static;
+        transform: none;
+        font-size: 0.3rem;
+        margin-top: 10px;
+        text-align: left;
+    }
+
+    .go-to-products-btn,
+    .create-new-btn {
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0 0 19px 0;
+        padding: 13px 19px;
+        border-radius: 9px;
+        font-size: 16px;
+    }
+
+    .create-new-btn {
+        margin-top: 11px;
+        margin-bottom: 19px;
+    }
+}
+
+/* ===== Responsive Font Improve ===== */
+@media (max-width:600px) {
+    .quotation-list-container {
+        padding: 16px 5px;
+        border-radius: 0;
+    }
+
+    .quotation-header-wrapper h1 {
+        font-size: 0.95rem;
+    }
+
+    .quotation-header-wrapper:before {
+        height: 15px;
+        left: 0;
+    }
+}
+
+/* Subtle animated background for extra swag (optional) */
+.quotation-list-container:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+    background: radial-gradient(ellipse at 40% 18%, #f0f6ff 60%, #e0e8f8 100%);
+    opacity: .4;
+    pointer-events: none;
+    animation: floatLight 11s linear infinite alternate;
+}
+
+@keyframes floatLight {
+    0% {
+        background-position: 40% 10%;
+    }
+
+    100% {
+        background-position: 60% 70%;
+    }
+}
+
+/*
+This will turn the header into a flexible container.
+*/
+.quotation-header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    /* Puts space between the left and right items */
+    align-items: center;
+    /* Aligns everything vertically in the middle */
+    margin-bottom: 24px;
+    /* Adds some space below the header */
+}
+
+/*
+This is a new container for the items on the left side.
+*/
+.header-left-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    /* Creates some space between the button and the title */
+}
+
+.quotation-header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.header-left-section,
+.header-right-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-button-group {
+    display: flex;
+    flex-direction: column;
+    /* This is the key part that stacks items vertically */
+    gap: 8px;
+    /* This adds a small space between the two buttons */
+}
+
+.refresh-btn {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.refresh-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.customer-details-cell {
+    /* Yeh cell ke andar items ke liye vertical alignment set karta hai */
+    vertical-align: top;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.customer-details-cell div {
+    line-height: 1.5;
+    /* Lines ke beech thoda space */
+}
+
+.customer-details-cell .company-name {
+    font-weight: 700;
+    /* Company ka naam bold hoga */
+    color: #14365b;
+    font-size: 1.05rem;
+}
+
+.customer-details-cell .contact-person,
+.customer-details-cell .contact-no {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* ================================================================== */
+/* === 2. ADD this entire block to the END of your CSS file === */
+/* === Styling for NEW Cells and Buttons === */
+/* ================================================================== */
+
+/* Lead Info Cell Styling */
+.quotation-table td.lead-info-cell {
+    /* Yeh cell ke andar items ko top se align karega */
+    vertical-align: top;
+    padding-top: 12px;
+}
+
+.lead-info-cell div {
+    margin-bottom: 4px;
+    /* Yeh text ko left me align karega, agar koi parent style center kar raha ho to */
+    text-align: left;
+}
+
+.lead-info-cell .lead-title {
+    font-weight: bold;
+}
+
+/* attachment-wrapper ka style pehle jaisa hi rahega */
+.attachment-wrapper {
+    display: flex;
+    margin-top: 10px;
+}
+
+/* Attachment button ka style */
+/* Attachment button ka style */
+.attachment-btn {
+    background-color: #9c27b0;
+    color: white;
+    border: 1px solid transparent;
+    cursor: pointer;
+    /* Yeh line zaroori hai. Isse button flex container mein fail nahi hoga. */
+    flex-grow: 0;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+/* Delete button ka style */
+.delete-attachment-btn {
+    background-color: #f44336;
+    color: white;
+    border: 1px solid transparent;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 5px;
+}
+
+/* Optional: Style the attachment icon */
+.attachment-btn>span {
+    /* Assuming you have a span or i tag for the icon */
+    /* Add icon specific styling here */
+}
+
+/* Status Cell Styling */
+.status-cell .next-follow-date,
+.status-cell .action-buttons {
+    display: block;
+    width: 100%;
+}
+
+
+.status-cell .action-buttons {
+    margin-top: 5px;
+    /* Optional: Adds a little space between the date and buttons */
+}
+
+.status-cell .status-title {
+    font-weight: bold !important;
+}
+
+.status-cell .check-it-link {
+    display: block;
+    /* This moves the link to a new line */
+    font-weight: normal;
+    margin-left: 0;
+    /* The left margin is no longer needed */
+    color: #4a774a;
+}
+
+/* This makes the label "Next Follow Date :" red */
+.status-cell .next-follow-date {
+    color: red !important;
+    font-weight: bold;
+}
+.quotation-table td.status-history-cell {
+    /* Make the cell a flexible container */
+    display: flex;
+    /* Vertically align all children to the top */
+    align-items: flex-start;
+    /* Add a gap between the 'Follow Up' section and the 'Quotation History' popup */
+    gap: 20px;
+    padding-top: 12px;
+}
+
+/* 2. Style the new wrapper around the 'Follow Up' content */
+.follow-up-wrapper {
+    /* Allow this container to take up as much space as it needs horizontally */
+    flex-shrink: 0;
+    /* Make sure the text inside wraps if it's too long */
+    word-wrap: break-word;
+    /* Set a minimum width if you need to, to prevent it from collapsing */
+    min-width: 150px;
+}
+.latest-quotation-box.follow-up-box {
+    /* Main card container styles */
+    background-color: #f5f0f5; /* Light pink background */
+    border: 1px solid #d4c2d4; /* Matching border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px; /* Internal spacing */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: A subtle shadow for depth */
+
+    /* Ensure a consistent width */
+    width: 230px; /* Adjust this width as needed */
+    flex-shrink: 0; /* Prevents the card from shrinking in a flex container */
+}
+
+
+/* This styles the BLACK date and moves it to a new line below the label */
+.status-cell .next-follow-date span {
+    display: block;
+    /* CRITICAL: This forces the date onto a new line */
+    color: black !important;
+    font-weight: normal;
+    font-size: 0.9em;
+    margin-top: 4px;
+    /* Adds a small space between the label and the date */
+}
+.status-cell {
+    /* Use flexbox to align items horizontally */
+    display: flex;
+    /* Aligns items to the top of the container */
+    align-items: flex-start;
+}
+
+.update-btn,
+.history-btn-large {
+    background-color: #8a2be2;
+    /* Violet color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 12px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+/* Actions Cell (Original styling for reference) */
+.actions-cell {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px; /* yahi gap control karega */
+}
+
+.actions-cell a,
+.actions-cell button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+
+.action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-radius: 5px;
+    width: 32px;
+    height: 32px;
+    background: transparent; /* No background, icon only */
+    transition: all 0.2s ease-in-out;
+}
+
+.action-icon:hover {
+    background: rgba(255, 255, 255, 0.15); /* Light hover background */
+    transform: scale(1.15); /* Slight zoom */
+}
+
+/* Agar vertical layout chahiye (rare cases) */
+.action-icons-vertical {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 50px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.preview-icon {
+    background-color: #3498db;
+}
+
+.edit-icon {
+    background-color: #f39c12;
+}
+
+.delete-icon {
+    background-color: #e74c3c;
+}
+
+/* === STYLING FOR QUOTATION HISTORY FEATURE === */
+/* Add these styles to your existing quotations-view.css file */
+
+.quotation-history-cell {
+    vertical-align: top;
+    padding-top: 10px !important;
+}
+
+
+.lq-header {
+    background-color: #463168; /* Matching your main header color */
+    color: #FFFFFF;
+    font-weight: 700; /* Bolder font weight for header */
+    font-size: 16px;
+    padding: 12px 16px;
+    border-radius: 12px 12px 0 0; /* Slightly rounded top corners */
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.latest-quotation-container {
+    background-color: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    border-radius: 18px; /* Consistent with your main table */
+    padding: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Soft shadow */
+    font-family: 'Inter', sans-serif;
+    max-width: 400px;
+
+    /* Naya CSS jisse button center mein aayega */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.latest-quotation-box {
+    border: 1px solid #b0f3b2;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 380px;
+    /* Adjust as needed */
+    font-size: 12px;
+    background-color: #f5fff5;
+}
+
+.latest-quotation-box .lq-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.5fr 0.5fr 0.5fr;
+    /* Adjust column ratios */
+    align-items: center;
+    padding: 4px 8px;
+    gap: 5px;
+    text-align: center;
+}
+
+.latest-quotation-box .lq-row.header {
+    background-color: #c2caee;
+    color: black;
+    font-weight: bold;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.latest-quotation-box .lq-row:not(.header) {
+    font-weight: 500;
+}
+
+.latest-quotation-box .action-icon img {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* Update the lq-row data to have correct grid columns */
+.lq-row.data {
+    display: grid;
+    grid-template-columns: 1fr 0.5fr 1fr 0.3fr 0.3fr;
+    padding: 8px;
+    font-size: 14px;
+    align-items: center;
+}
+
+
+/* Ensure the action columns are centered */
+.lq-col.action-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style the FontAwesomeIcon directly to ensure it's visible */
+.lq-row .action-icon svg {
+    width: 16px;
+    height: 16px;
+}
+.history-item {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr auto;
+  gap: 8px;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+.history-popup .history-item {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1.5fr auto auto; /* Date, ID, Total, Print, Edit */
+  gap: 10px;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+.history-popup .history-item.header {
+  font-weight: bold;
+  background-color: #f0e6f8; /* Light purple background */
+  border-bottom: 2px solid #dcdcdc;
+  font-size: 0.9em;
+}
+
+.history-item .days-ago {
+  color: red;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.history-item .action-icon {
+  color: #555;
+  font-size: 1.1em;
+}
+.history-item .action-icon:hover {
+  color: #007bff;
+}
+
+.history-trigger-btn {
+    background: linear-gradient(90deg, #5280ff 60%, #2ed7a7 110%);
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 15px;
+    width: auto; /* CRITICAL CHANGE: This makes the button's width fit its content */
+    display: inline-block; /* To ensure 'width: auto' works correctly */
+    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+/* --- History Popup Styles --- */
+/* Find the old .history-popup rule and REPLACE it with this one */
+.history-popup {
+    /* We have removed position, top, right, and z-index */
+    width: 380px;
+    margin-top: 5px;
+    /* Adds a small gap from the button above it */
+    background-color: #fff;
+    border: 1px solid #4a148c;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.history-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #8064a1;
+    /* Purple color from screenshot */
+    color: white;
+    padding: 8px 12px;
+    font-weight: bold;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.history-close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.history-popup-body {
+    padding: 8px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.history-popup-item {
+    display: grid;
+    /* Create 5 columns with proportions that match the reference */
+    grid-template-columns: 2.5fr 1.5fr 2fr 1fr 1fr;
+    align-items: center;
+    padding: 8px 4px;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+    text-align: center;
+}
+
+.history-popup-item:last-child {
+    border-bottom: none;
+}
+
+.history-popup-item .item-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+}
+
+.history-popup-item .copy-btn {
+    background-color: #673ab7;
+    color: white;
+    border: none;
+    padding: 3px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.history-popup-item .action-icon img {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.history-popup-item .item-actions .action-icon svg {
+    width: 16px;
+    height: 16px;
+    color: #337ab7;
+    /* A visible blue color, change as you like */
+}
+
+.history-popup-item.header {
+    background-color: #e0e0e0;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #ccc;
+    font-size: 11px;
+    /* Smaller font for headers */
+    padding: 4px;
+}
+
+.history-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.4;
+}
+
+.history-col.history-date .days-ago {
+    color: red;
+    font-weight: bold;
+}
+
+/* Style for the bold total amount */
+.history-col.history-total {
+    font-weight: bold;
+    color: #333;
+}
+
+.quotation-list-header {
+    background-color: #2c638e;
+    /* The blueish color from the image */
+    padding: 10px 20px;
+    /* Adjust padding for height and spacing */
+    border-radius: 5px 5px 0 0;
+    /* Optional: Rounded top corners */
+    margin-top: 20px;
+    /* Space above the header */
+}
+
+.quotation-list-title {
+    color: white;
+    font-family: sans-serif;
+    /* Use a clean, sans-serif font */
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.latest-quotation-box .lq-row.header .lq-col {
+    white-space: nowrap;
+}
+.history-trigger-btn:hover {
+    background: linear-gradient(90deg, #2ed7a7 40%, #5280ff 100%);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+.quotation-main-identifier {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Quot no aur status indicator ke beech space */
+  margin-bottom: 4px;
+}
+.days-ago {
+    color: red;
+    font-style: normal; /* Ya aap jo bhi style chahte hain */
+}
+
+.quotation-id-small {
+  font-size: 0.8em;
+  color: #667085; /* Thoda halka rang */
+}
+.lq-header-row {
+    display: grid;
+    grid-template-columns: 1fr 0.5fr 0.9fr 0.4fr 0.3fr; /* Adjust columns as needed */
+    padding: 8px;
+    background-color: #e0f0e0; /* Light green for the header row */
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    font-size: 12px;
+}
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #ccc; /* Thicker, lighter gray border */
+  border-bottom-color: #3b82f6; /* A vibrant blue color for the spinner */
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.lq-col.lq-date {
+    /* Date aur Days Ago ko ek hi line mein rakhne ke liye */
+    display: flex;
+    flex-direction: column;
+    /* Agar single line mein chahiye, toh flex-direction: row; kar sakte hain */
+}
+
+/* Niche wala CSS date ko wrap hone se rokne mein madad karega */
+.lq-col.lq-date span {
+    white-space: nowrap;
+}
+/* quotations-view.css */
+
+.status-cell {
+    /* Ensure the cell can contain the card properly */
+    vertical-align: top;
+    padding: 10px;
+}
+
+.status-card {
+    background-color: #fce4ec; /* Light pink background color */
+    border: 1px solid #f7c9f4; /* A slightly darker pink border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    font-family: sans-serif; /* Example font */
+}
+
+/* Adjusting existing elements within the new card */
+.follow-up-header {
+    color: #9c27b0; /* Purple color */
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.lead-priority {
+    font-weight: bold;
+    color: #d32f2f; /* Red for 'HOT' or similar priority */
+}
+
+.lead-priority.hot {
+    color: #d32f2f;
+}
+
+.activity-info {
+    color: #008000; /* Green color for 'Check it...' */
+    font-style: italic;
+    margin-top: 5px;
+}
+
+.next-follow-date-label {
+    font-weight: bold;
+    color: #d32f2f; /* Red color for the label */
+    margin-top: 10px;
+}
+
+.next-follow-date-value {
+    font-weight: bold;
+    color: #333;
+}
+
+.action-buttons-card {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: flex-start;
+}
+
+.update-btn, .history-btn-large {
+    /* Existing button styles */
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+}
+
+.update-btn {
+    background-color: #9c27b0; /* Purple button */
+}
+
+.history-btn-large {
+    background-color: #9c27b0; /* Purple button */
+}
+
+/* Ensure the layout is clean */
+.status-card > div {
+    margin-bottom: 4px;
+}

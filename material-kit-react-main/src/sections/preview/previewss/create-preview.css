@@ -1,0 +1,626 @@
+/* src/sections/quotations/preview/previewss/create-preview.css */
+
+/* --- General Document & Body Styling (for A4 Print Layout) --- */
+body {
+    font-family: 'Arial', sans-serif; /* A clean, common sans-serif font */
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5; /* Light grey background for web view */
+    -webkit-print-color-adjust: exact !important; /* Forces print of background colors/images */
+    print-color-adjust: exact !important;
+}
+
+/* Main container mimicking an A4 paper for screen display */
+.quotation-preview-container {
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow for screen */
+    margin: 30px auto; /* Centered with margin for web view */
+    padding: 20mm 25mm; /* Top/Bottom 20mm, Left/Right 25mm */
+    width: 210mm; /* A4 width */
+    min-height: 297mm; /* A4 height */
+    box-sizing: border-box; /* Padding included in width/height */
+    position: relative; /* For elements positioned relative to the page */
+    font-size: 9.5pt; /* Base font size for readability on print and screen */
+    color: #333;
+    line-height: 1.4;
+    overflow: hidden; /* Important for containing floats/absolute elements */
+}
+
+/* --- Loading and Error Message Styling --- */
+.loading-message-container,
+.error-message-container,
+.no-data-message-container {
+    text-align: center;
+    padding: 50px;
+    font-size: 1.2em;
+    color: #555;
+}
+.error-message { color: #dc3545; font-weight: bold; }
+.back-button {
+    background-color: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;
+    font-size: 1em; transition: background-color 0.3s ease; margin-top: 20px;
+}
+.back-button:hover { background-color: #5a6268; }
+
+
+/* --- Action Buttons (Web View Only) --- */
+.preview-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+.preview-actions button {
+    padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer;
+    font-size: 0.95em; font-weight: bold; transition: background-color 0.3s ease; white-space: nowrap;
+}
+.back-to-quotations-btn { background-color: #6c757d; color: white; }
+.back-to-quotations-btn:hover { background-color: #5a6268; }
+.print-quotation-btn { background-color: #007bff; color: white; }
+.print-quotation-btn:hover { background-color: #0056b3; }
+
+
+/* --- Company Header Section (Logo, Company Info, Quotation Title) --- */
+.company-quotation-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Logo/Contact on left, Quotation details on right */
+    gap: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #000; /* Main border around the top section */
+}
+
+.company-details-block {
+    padding: 10px;
+    border-right: 1px solid #000; /* Vertical divider */
+}
+
+.company-logo {
+    width: 150px; /* Adjust as per your logo size */
+    height: auto;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.company-contact-info p {
+    font-size: 0.8em;
+    margin: 2px 0;
+    line-height: 1.2;
+}
+.company-contact-info strong {
+    color: #000;
+}
+
+.quotation-details-block {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    text-align: center;
+}
+
+.quotation-title {
+    font-size: 1.8em; /* Slightly smaller for better fit, adjust as needed */
+    font-weight: bold;
+    color: #000; /* Black as in PDF */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.quotation-title-underline {
+    border-bottom: 2px solid #000; /* Underline for "QUOTATION" */
+    display: inline-block;
+    padding-bottom: 2px;
+}
+
+.quotation-meta-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns for meta info */
+    gap: 10px;
+    font-size: 0.85em;
+    margin-top: 10px;
+}
+.quotation-meta-row div span:first-child {
+    font-weight: bold;
+    color: #000;
+    margin-right: 5px;
+}
+
+/* --- Customer & Sales Rep Details (Two Columns) --- */
+.customer-sales-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0; /* No gap between sections if borders handle it */
+    margin-bottom: 20px;
+    border: 1px solid #000; /* Main border around this section */
+}
+
+.customer-info-section,
+.sales-rep-info-section {
+    padding: 10px;
+}
+.customer-info-section {
+    border-right: 1px solid #000; /* Vertical divider */
+}
+
+.customer-info-section h3,
+.sales-rep-info-section h3 {
+    background-color: #f0f0f0; /* Light grey background for section titles */
+    padding: 5px 10px;
+    margin: -10px -10px 10px -10px; /* Adjust negative margins to fill parent padding */
+    font-size: 1em;
+    color: #000;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-bottom: 1px solid #000; /* Underline for TO: / SALES REP: */
+}
+.customer-info-section h3 {
+    margin-left: -11px; /* Offset for left border */
+    margin-right: -11px; /* Offset for right border (from parent) */
+    padding-left: 10px; /* Adjust padding due to offset */
+    padding-right: 10px;
+}
+
+.sales-rep-info-section h3 {
+    margin-left: -10px;
+    margin-right: -10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.customer-info-section p,
+.sales-rep-info-section p {
+    margin: 3px 0;
+    font-size: 0.9em;
+    line-height: 1.3;
+    display: flex;
+}
+.customer-info-section p strong, /* For bold labels like 'COMPANY:' */
+.sales-rep-info-section p strong {
+    min-width: 80px; /* Align labels consistently */
+    font-weight: bold;
+    color: #000;
+    text-transform: uppercase;
+    flex-shrink: 0; /* Prevent label from shrinking */
+    padding-right: 5px;
+}
+.customer-info-section p span,
+.sales-rep-info-section p span {
+    flex-grow: 1; /* Allow value to take remaining space */
+}
+
+/* Sub-heading for products (Sub: in PDF) */
+.quotation-sub-heading {
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 20px 0 10px 0;
+    padding-left: 5px;
+    color: #000;
+}
+
+
+/* --- Products Table Section --- */
+.product-items-table-wrapper {
+    margin-bottom: 20px;
+    border: 1px solid #000; /* Main border around the entire table */
+}
+
+.product-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85em; /* Smaller base font for table content */
+}
+
+.product-items-table th,
+.product-items-table td {
+    border: 1px solid #e0e0e0; /* Lighter inner borders */
+    padding: 5px 8px; /* Compact padding */
+    text-align: left;
+    vertical-align: top;
+}
+
+.product-items-table thead th {
+    background-color: #f0f0f0; /* Light grey header */
+    font-weight: bold;
+    color: #000;
+    text-transform: uppercase;
+    font-size: 0.75em; /* Even smaller header text */
+    padding: 8px 10px;
+    text-align: center; /* Center align table headers */
+}
+
+/* Specific Column Widths & Alignment based on PDF */
+.product-items-table th:nth-child(1), .product-items-table td:nth-child(1) { width: 4%; text-align: center; } /* Pro No */
+.product-items-table th:nth-child(2), .product-items-table td:nth-child(2) { width: 20%; } /* Product Code/Image */
+.product-items-table th:nth-child(3), .product-items-table td:nth-child(3) { width: 18%; } /* Description */
+.product-items-table th:nth-child(4), .product-items-table td:nth-child(4) { width: 22%; } /* Specification */
+.product-items-table th:nth-child(5), .product-items-table td:nth-child(5) { width: 10%; text-align: right; } /* Price */
+.product-items-table th:nth-child(6), .product-items-table td:nth-child(6) { width: 8%; text-align: center; } /* Qty */
+.product-items-table th:nth-child(7), .product-items-table td:nth-child(7) { width: 18%; text-align: right; } /* Amount (Total) */
+/* The "Discount" column seems to be missing from the table in the PDF, assuming it's part of Amount logic */
+
+/* Styling for product-image-cell within table */
+.product-image-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+.product-item-thumbnail {
+    width: 60px; /* Smaller image in table */
+    height: 60px;
+    object-fit: contain;
+    border: 1px solid #ddd;
+    padding: 1px;
+    display: block;
+    margin: 0 auto;
+}
+.product-item-thumbnail.broken-image {
+    /* Example: A simple broken image placeholder */
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ccc' d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/%3E%3C/svg%3E");
+    border: 1px dashed #dc3545;
+    opacity: 0.7;
+}
+.no-image-placeholder-small {
+    font-size: 0.6em;
+    color: #aaa;
+    margin-top: 5px;
+    text-align: center;
+}
+
+/* Item Description Cell specific elements */
+.item-description-cell strong { font-size: 0.9em; margin-bottom: 2px; }
+.item-description-cell .sub-description { font-size: 0.75em; margin-top: 2px; margin-bottom: 2px; }
+.product-specs span { font-size: 0.7em; }
+
+
+/* --- Transport / Charges Section --- */
+.transport-charges-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    margin-top: 20px;
+}
+.transport-charges-table td {
+    border: 1px solid #e0e0e0;
+    padding: 6px 10px;
+}
+.transport-charges-table td:first-child {
+    font-weight: bold;
+    width: 70%; /* Adjust as per your layout */
+}
+.transport-charges-table td:last-child {
+    text-align: right;
+}
+
+/* --- Summary / Grand Total Section (Combined) --- */
+.quotation-summary-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr; /* QR/Signature on left, summary on right */
+    gap: 0;
+    margin-top: 20px;
+    border: 1px solid #000;
+}
+
+.qr-code-signature-area {
+    padding: 15px;
+    border-right: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Push QR to top, signature to bottom */
+}
+
+.qr-code-area {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.qr-code-area h4 {
+    margin: 0 0 5px 0;
+    font-size: 0.9em;
+    color: #555;
+}
+.qr-code-image {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #eee;
+    padding: 3px;
+    background-color: #fff;
+}
+.qr-label {
+    font-size: 0.75em;
+    color: #777;
+    margin-top: 5px;
+}
+
+.signature-block {
+    text-align: right;
+    margin-top: 20px; /* Space from QR if no content in between */
+}
+.signature-line {
+    border-bottom: 1px solid #000;
+    width: 150px;
+    margin-left: auto;
+    margin-bottom: 5px;
+}
+.signature-block p {
+    margin: 2px 0;
+    font-size: 0.8em;
+    color: #555;
+}
+.signature-block .company-name-sign {
+    font-weight: bold;
+    color: #000;
+}
+.signature-block .authorized-signatory {
+    font-weight: bold;
+    color: #333;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.quotation-summary-details {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Align totals to the bottom */
+}
+
+.quotation-summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+.quotation-summary-item span:first-child { font-weight: bold; color: #000; }
+.quotation-summary-item span:last-child { text-align: right; }
+
+.grand-total-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #000; /* Line above grand total */
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #000;
+}
+.grand-total-row span:last-child { color: #000; font-size: 1.1em; } /* Make amount slightly larger */
+
+.amount-in-words {
+    font-size: 0.85em;
+    font-style: italic;
+    text-align: right;
+    margin-top: 5px;
+    color: #555;
+}
+
+/* --- Terms & Conditions Section --- */
+.terms-conditions-section {
+    margin-top: 20px; /* Space from summary */
+    border: 1px solid #000; /* Border around T&C */
+    padding: 15px;
+    font-size: 0.8em;
+    color: #666;
+    line-height: 1.5;
+}
+.terms-conditions-section h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #000;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    border-bottom: 1px solid #eee; /* Light underline for T&C title */
+    padding-bottom: 5px;
+}
+.terms-conditions-section ol {
+    margin: 0;
+    padding-left: 20px;
+}
+.terms-conditions-section ol li {
+    margin-bottom: 5px;
+}
+
+/* --- Final Footer / HSN Codes --- */
+.final-footer-section {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee; /* Light line above footer */
+    font-size: 0.8em;
+    color: #555;
+    text-align: center;
+}
+
+.hsn-codes-section {
+    margin-top: 20px;
+    border: 1px solid #000;
+    padding: 15px;
+    font-size: 0.8em;
+    color: #666;
+    line-height: 1.5;
+}
+.hsn-codes-section h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #000;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+.hsn-codes-list p {
+    margin: 2px 0;
+}
+
+.thank-you-section {
+    text-align: right;
+    margin-top: 30px;
+    font-size: 0.9em;
+    color: #333;
+}
+.thank-you-section p {
+    margin: 3px 0;
+}
+.thank-you-section strong {
+    font-weight: bold;
+}
+.thank-you-section .company-sign-bottom {
+    font-weight: bold;
+    font-size: 1em;
+    margin-top: 15px;
+    color: #000;
+}
+
+
+/* --- Print Specific Styles --- */
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #fff; /* White background for print */
+        font-size: 9pt; /* Slightly smaller base font for print */
+    }
+    .quotation-preview-container {
+        box-shadow: none; /* Remove shadow in print */
+        border: none; /* Remove outer border in print */
+        margin: 0; /* No external margins */
+        padding: 10mm 15mm; /* Adjust inner page margins for print */
+        width: 210mm;
+        min-height: 297mm;
+        page-break-after: always; /* Ensure a page break after each quotation if multiple */
+    }
+    /* Hide specific elements for printing */
+    .preview-actions { display: none; }
+
+    /* Fine-tune spacing for print */
+    .company-quotation-header,
+    .customer-sales-grid,
+    .product-items-table-wrapper,
+    .quotation-summary-grid,
+    .terms-conditions-section,
+    .hsn-codes-section,
+    .thank-you-section {
+        margin-bottom: 10px; /* Reduce vertical spacing between major sections */
+    }
+
+    .quotation-items-table th,
+    .quotation-items-table td {
+        border-color: #999 !important; /* Darker borders for print */
+        padding: 4px 6px; /* Even more compact for print */
+    }
+    .product-item-thumbnail {
+        width: 50px; /* Even smaller images for print */
+        height: 50px;
+    }
+
+    .qr-code-image {
+        width: 80px; /* Smaller QR code */
+        height: 80px;
+    }
+    .signature-line {
+        width: 120px; /* Shorter signature line */
+    }
+}
+
+
+/* --- Responsive Adjustments (for smaller screens/devices) --- */
+@media (max-width: 768px) {
+    .quotation-preview-container {
+        padding: 15px;
+        margin: 15px auto;
+        width: auto; /* Allow width to be fluid */
+        min-height: unset; /* Remove min-height for fluid content */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Lighter shadow for mobile */
+    }
+
+    .company-quotation-header,
+    .customer-sales-grid,
+    .quotation-meta-info-section,
+    .qr-signature-section {
+        grid-template-columns: 1fr; /* Stack columns vertically */
+        gap: 15px;
+    }
+
+    .company-details-block,
+    .customer-info-section,
+    .sales-rep-info-section,
+    .qr-code-signature-area {
+        border-right: none; /* Remove vertical dividers when stacked */
+        border-bottom: 1px solid #eee; /* Add horizontal divider */
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+    .customer-info-section:last-child,
+    .sales-rep-info-section:last-child,
+    .qr-code-signature-area:last-child {
+        border-bottom: none; /* No extra border on last stacked item */
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .quotation-title {
+        font-size: 1.8em;
+    }
+
+    .product-items-table-wrapper {
+        min-width: unset; /* Allow table to shrink */
+        overflow-x: auto; /* Keep scrolling if needed */
+    }
+
+    /* Table cells as blocks */
+    .product-items-table, .product-items-table tbody, .product-items-table tr, .product-items-table td, .product-items-table th {
+        display: block;
+    }
+    .product-items-table thead {
+        display: none; /* Hide table headers on small screens */
+    }
+    .product-items-table tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    .product-items-table td {
+        text-align: right;
+        padding-left: 40%;
+        position: relative;
+        border: none;
+        padding-bottom: 5px;
+        padding-top: 5px;
+    }
+    .product-items-table td:last-child {
+        border-bottom: none;
+    }
+    .product-items-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 35%;
+        padding-left: 10px;
+        font-weight: bold;
+        text-align: left;
+        color: #555;
+    }
+
+    .product-image-cell {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .product-item-thumbnail {
+        margin: 10px auto;
+    }
+    .no-image-placeholder-small { margin-top: 0; }
+
+    .quotation-summary-grid {
+        grid-template-columns: 1fr; /* Stack summary sections */
+    }
+    .qr-code-signature-area { border-right: none; border-bottom: 1px solid #000; padding-bottom: 20px; }
+    .quotation-summary-details { text-align: center; }
+    .grand-total-row { justify-content: center; gap: 10px; }
+
+    .signature-area { text-align: center; }
+    .signature-line { margin-left: auto; margin-right: auto; }
+}
+
+
