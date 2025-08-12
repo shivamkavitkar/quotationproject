@@ -66,22 +66,22 @@ export const routesSection: RouteObject[] = [
     ),
     children: [
       // Pass a dummy toggleSidebar function to satisfy required props
-      { index: true, element: <DashboardPage toggleSidebar={() => null} /> },
-      { path: 'user', element: <UserPage toggleSidebar={() => null} /> },
-      { path: 'products', element: <ProductsPage toggleSidebar={() => null} /> },
+      { index: true, element: <DashboardPage  /> },
+      { path: 'user', element: <UserPage  /> },
+      { path: 'products', element: <ProductsPage  /> },
 
       // --- NEW QUOTATION ROUTES ---
       // This is the main list view for quotations
-      { path: 'quotations', element: <QuotationsViewPage toggleSidebar={() => null} /> },
+      { path: 'quotations', element: <QuotationsViewPage  /> },
       // Route for creating a new quotation
-      { path: 'quotations/create', element: <CreateQuotationPage toggleSidebar={() => null} /> },
+      { path: 'quotations/create', element: <CreateQuotationPage  /> },
       // Route for previewing a specific quotation (dynamic parameter :quot_no)
-      { path: 'quotations/preview/:quot_no', element: <QuotationPreviewPage toggleSidebar={() => null} /> },
+      { path: 'quotation/preview/:quot_no', element: <QuotationPreviewPage  /> },
 
     
       // This route will use the same CreateQuotationPage component for editing
-      { path: 'quotations/edit/:quot_no', element: <CreateQuotationPage toggleSidebar={() => null} /> }, 
-       { path: 'companies', element: <CompaniesPage toggleSidebar={() => null} /> },
+      { path: 'quotation/edit/:quot_no', element: <CreateQuotationPage  /> }, 
+       { path: 'companies', element: <CompaniesPage  /> },
     ],
   },
   {

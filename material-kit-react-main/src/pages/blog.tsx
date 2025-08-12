@@ -1,16 +1,18 @@
-import { _posts } from 'src/_mock';
 import { CONFIG } from 'src/config-global';
 
-import { BlogView } from 'src/sections/blog/view';
+// Import from the new 'address' section
+import CompaniesView from 'src/sections/address';
 
 // ----------------------------------------------------------------------
 
 export default function Page() {
   return (
     <>
-      <title>{`Blog - ${CONFIG.appName}`}</title>
+      {/* Update the title */}
+      <title>{`Companies - ${CONFIG.appName}`}</title>
 
-      <BlogView posts={_posts} />
+      {/* Use the new component */}
+      <CompaniesView />
     </>
   );
 }

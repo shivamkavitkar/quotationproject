@@ -42,7 +42,7 @@ const MuiCard: Components<Theme>['MuiCard'] = {
       zIndex: 0,
       position: 'relative',
       boxShadow: theme.vars.customShadows.card,
-      borderRadius: theme.shape.borderRadius * 2,
+       borderRadius: `calc(${theme.shape.borderRadius} * 2)`,
     }),
   },
 };
@@ -153,7 +153,7 @@ const MuiRadio: Components<Theme>['MuiRadio'] = {
   },
 };
 
-// ----------------------------------------------------------------------
+
 
 export const components = {
   MuiCard,

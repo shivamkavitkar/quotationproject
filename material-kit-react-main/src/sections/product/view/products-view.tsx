@@ -47,7 +47,7 @@ interface ProductSpecs {
   price: string;
 }
 
-export function ProductsView({ toggleSidebar }: { toggleSidebar: () => void }) {
+export function ProductsView({ toggleSidebar }: { toggleSidebar ?: () => void }) {
   const navigate = useNavigate();
 
   const [products, setProducts] = useState<Product[]>([]);
