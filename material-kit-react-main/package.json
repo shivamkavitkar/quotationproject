@@ -4,11 +4,12 @@
   "licence": "MIT",
   "version": "3.0.0",
   "private": false,
+   "homepage": "./",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "start": "vite preview",
-    "build": "vite build && cp dist/vercel.json dist/vercel.json",
+    "build": "tsc && vite build",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:print": "npx eslint --print-config eslint.config.mjs > eslint-show-config.json",
