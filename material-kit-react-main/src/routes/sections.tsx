@@ -76,11 +76,11 @@ export const routesSection: RouteObject[] = [
       // Route for creating a new quotation
       { path: 'quotations/create', element: <CreateQuotationPage  /> },
       // Route for previewing a specific quotation (dynamic parameter :quot_no)
-      { path: 'quotation/preview/:quot_no', element: <QuotationPreviewPage  /> },
+      { path: 'quotations/preview/:quot_no', element: <QuotationPreviewPage  /> },
 
     
       // This route will use the same CreateQuotationPage component for editing
-      { path: 'quotation/edit/:quot_no', element: <CreateQuotationPage  /> }, 
+      { path: 'quotations/edit/:quot_no', element: <CreateQuotationPage  /> }, 
        { path: 'companies', element: <CompaniesPage  /> },
     ],
   },

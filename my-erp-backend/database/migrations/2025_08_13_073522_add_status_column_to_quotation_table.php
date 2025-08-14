@@ -4,18 +4,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddStatusToQuotationsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        // IMPORTANT: Table name changed to 'quotation' (singular) as per your clarification
         Schema::connection('scomfort')->table('quotation', function (Blueprint $table) {
-            $table->string('status')->notNull()->default('draft')->after('quot_no');
+            // status कॉलम को 'quot_no' कॉलम के बाद, 'final' डिफ़ॉल्ट वैल्यू के साथ जोड़ता है
+            $table->string('status')->nullable()->default('final')->after('quot_no');
         });
     }
 
@@ -24,11 +24,11 @@ class AddStatusToQuotationsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
-        // IMPORTANT: Table name changed to 'quotation' (singular) as per your clarification
         Schema::connection('scomfort')->table('quotation', function (Blueprint $table) {
+            // migration को undo करने के लिए status कॉलम को हटाता है
             $table->dropColumn('status');
         });
     }
-}
+};

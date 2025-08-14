@@ -86,19 +86,25 @@ public function index(Request $request)
                             FROM sts_lead_activity 
                             WHERE lead_id IN ('.implode(',', $leadIdsOnCurrentPage->toArray()).') 
                             GROUP BY lead_id) latest'),
-                   function ($join) {
+                    function ($join) {
                         $join->on('sla.id', '=', 'latest.max_id');
-                   })
+                    })
             ->select('sla.lead_id', 'sla.status', 'sla.activity', 'sla.lead_priority', 'sla.created_date', 'sla.next_date')
             ->get()
             ->keyBy('lead_id');
 
         // STEP 4: Format data
+        /** @var \Illuminate\Support\Collection $formattedLeads */
         $formattedLeads = $paginatedLeads->getCollection()->map(function ($lead) use ($allQuotationsForPage, $latestLeadActivity) {
+            /** @var \Illuminate\Support\Collection $quotationsForThisLead */
             $quotationsForThisLead = $allQuotationsForPage->get($lead->lead_id, collect());
+            
+            /** @var \Illuminate\Support\Collection $groupedByQuotId */
             $groupedByQuotId = $quotationsForThisLead->groupBy('quot_id');
 
+            /** @var \Illuminate\Support\Collection|null $latestQuotGroup */
             $latestQuotGroup = $groupedByQuotId->sortByDesc(function ($group) {
+                /** @var \Illuminate\Support\Collection $group */
                 return $group->max('id');
             })->first();
 
@@ -109,6 +115,7 @@ public function index(Request $request)
             });
 
             $history = $historicalQuotGroups->map(function ($group) {
+                /** @var \stdClass $firstRow */
                 $firstRow = $group->first();
                 return [
                     'id' => $firstRow->id,
@@ -119,18 +126,20 @@ public function index(Request $request)
                 ];
             })->values()->toArray();
 
+            /** @var \stdClass $latestQuotation */
             $latestQuotation = $latestQuotGroup->first();
+            /** @var \stdClass|null $activityData */
             $activityData = $latestLeadActivity->get($latestQuotation->lead_id);
 
             return [
                 'id' => $latestQuotation->id,
                 'quot_id' => $latestQuotation->quot_id,
                 'quot_no' => $latestQuotation->quot_no,
-                'status' => $activityData->status ?? $latestQuotation->status,
-                'activity' => $activityData->activity ?? null,
-                'lead_priority' => $activityData->lead_priority ?? null,
-                'created_date' => $activityData->created_date ?? null,
-                'next_date' => $activityData->next_date ?? null,
+                'status' => optional($activityData)->status ?? $latestQuotation->status,
+                'activity' => optional($activityData)->activity ?? null,
+                'lead_priority' => optional($activityData)->lead_priority ?? null,
+                'created_date' => optional($activityData)->created_date ?? null,
+                'next_date' => optional($activityData)->next_date ?? null,
                 'date' => $latestQuotation->date,
                 'company_name' => $latestQuotation->company_name ?? 'N/A',
                 'customer_id' => $latestQuotation->customer_id,
@@ -339,6 +348,35 @@ public function store( Request $request ) {
     }
 
     $validatedData = $validator->validated();
+  $textColumns = [
+            'term_condition', 'transport_type', 'activity', 'remark', 'created_by', 'status',
+            'quotation_status', 'installation_type', 'pro_code', 'pro_image', 'description_head',
+            'pro_dec', 'hsn_code', 'size', 'size1', 'size2', 'colour', 'format', 'color1', 'color2',
+            'rate_remark', 'commission_remark', 'internal_remark', 'balance_approval_sts',
+            'balance_app_remark', 'advance_approval_sts', 'advance_app_remark', 'aggrement_attachment',
+            'work_order_no', 'search_data'
+        ];
+        foreach ($textColumns as $column) {
+            $validatedData[$column] = $validatedData[$column] ?? '';
+        }
+
+        $numericColumns = [
+            'lead_id', 'employee_id', 'edited_by', 'edited_no_of_time', 'sorted_order', 'transport_in_product',
+            'unloading', 'request_by', 'approve_by', 'commission_principle', 'commission_approval_by',
+            'balance_approval_by', 'advance_approval_by', 'subtotal', 'gst_unr_status'
+        ];
+        foreach ($numericColumns as $column) {
+            $validatedData[$column] = $validatedData[$column] ?? 0;
+        }
+
+        $dateColumns = [
+            'next_date', 'edited_date', 'last_update', 'quot_temp_date', 'request_datetime', 'approval_dt',
+            'commission_approval_dt', 'balance_app_date', 'advance_app_date', 'expected_delivery_date',
+            'sample_return_date', 'sample_expected_delivery_date'
+        ];
+        foreach ($dateColumns as $column) {
+            $validatedData[$column] = $validatedData[$column] ?? now();
+        }
 
     DB::beginTransaction();
     try {
@@ -358,11 +396,13 @@ public function store( Request $request ) {
                 [ 'company_name' => $validatedData[ 'company_name' ] ],
                 [
                     // Aapke StsCompany table ke saare default values
+                    
                     'inactive_status' => 0,
                     'merge_id' => 0,
                     'account_id' => 0,
                     'master_customer_id' => 0,
                     'contact_person' => $validatedData[ 'contact_person_name' ] ?? '',
+                    
                     'contact_no1' => $validatedData[ 'contact_no' ] ?? '',
                     'contact_no2' => '',
                     'address' => $validatedData[ 'address' ] ?? '',
@@ -621,287 +661,208 @@ public function deleteQuotationImage( Request $request ) {
     * @return \Illuminate\Http\JsonResponse
     */
 
-    public function update( Request $request, $quot_no ) {
-        // This validation is based on your store method's validation.
-        $validator = Validator::make($request->all(), [
-            // ESSENTIAL CHANGE FOR UPDATE: This validation rule was adjusted to allow updating an existing record.
-            'quot_no' => [
-                'required',
-                'string',
+   public function update(Request $request, $quot_no)
+{
+    // Step 1: Complete validation rules are now included
+    $validator = Validator::make($request->all(), [
+        'quot_no' => [
+            'required',
+            'string',
+            Rule::unique('scomfort.quotation', 'quot_no')->ignore($quot_no, 'quot_no'),
+        ],
+        'date' => 'required|date',
+        'status' => 'nullable|string|in:draft,final',
+        'lead_id' => 'nullable|integer',
+        'company_name' => 'nullable|string|max:255',
+        'contact_person_name' => 'nullable|string|max:255',
+        'contact_no' => 'nullable|string|max:20',
+        'email_id' => 'nullable|email|max:255',
+        'address' => 'nullable|string',
+        'billing_pin_code' => 'nullable|string|max:10',
+        'billing_building_no' => 'nullable|string|max:255',
+        'billing_area' => 'nullable|string|max:255',
+        'billing_landmark' => 'nullable|string|max:255',
+        'billing_locality' => 'nullable|string|max:255',
+        'billing_city' => 'nullable|string|max:255',
+        'billing_state' => 'nullable|string|max:255',
+        'billing_country' => 'nullable|string|max:255',
+        'delivery_pin_code' => 'nullable|string|max:10',
+        'delivery_building_no' => 'nullable|string|max:255',
+        'delivery_area' => 'nullable|string|max:255',
+        'delivery_landmark' => 'nullable|string|max:255',
+        'delivery_locality' => 'nullable|string|max:255',
+        'delivery_city' => 'nullable|string|max:255',
+        'delivery_state' => 'nullable|string|max:255',
+        'delivery_country' => 'nullable|string|max:255',
+        'term_condition' => 'nullable|string',
+        'customer_id' => 'required|integer|exists:scomfort.sts_company,id',
+        'products' => 'nullable|array',
+        'products.*.pro_id' => 'nullable|string|max:255',
+        'products.*.qty' => 'required_with:products|numeric|min:1',
+        'products.*.mrp' => 'required_with:products|numeric|min:0',
+        'products.*.pro_image_path' => 'nullable|string|max:255',
+        'products.*.description_head' => 'nullable|string|max:255',
+        'products.*.pro_dec' => 'nullable|string',
+        'products.*.hsn_code' => 'nullable|string|max:50',
+        'remark' => 'nullable|string',
+        'next_date' => 'nullable|date',
+        'activity' => 'nullable|string',
+        'packaging' => 'nullable|numeric',
+        'loading' => 'nullable|numeric',
+        'transport' => 'nullable|numeric',
+        'unloading' => 'nullable|numeric',
+        'installation' => 'nullable|numeric',
+        'gst_sgst_per' => 'nullable|numeric',
+        'gst_cgst_per' => 'nullable|numeric',
+        'gst_igst_per' => 'nullable|numeric',
+        'gst_service_sgst_per' => 'nullable|numeric',
+        'gst_service_cgst_per' => 'nullable|numeric',
+        'advance' => 'nullable|numeric',
+        'transport_in_product' => 'nullable|numeric',
+        'transport_type' => 'nullable|string|max:50',
+    ]);
 
-                // This rule ensures that if the quot_no in the payload is changed,
-                // it remains unique among *other* quotations, but allows updating the current one.
-                Rule::unique('scomfort.quotation', 'quot_no')->ignore($quot_no, 'quot_no'),
-            ],
-            'date' => 'required|date',
-            'status' => 'nullable|string|in:draft, final',
-            'lead_id' => 'nullable|integer',
-            'company_name' => 'nullable|string|max:255', // Now directly validated for 'quotation' table
-            'contact_person_name' => 'nullable|string|max:255', // Directly validated
-            'contact_no' => 'nullable|string|max:20', // Directly validated
-            'email_id' => 'nullable|email|max:255',
-            'address' => 'nullable|string',
-            'billing_pin_code' => 'nullable|string|max:10',
-            'billing_building_no' => 'nullable|string|max:255',
-            'billing_area' => 'nullable|string|max:255',
-            'billing_landmark' => 'nullable|string|max:255',
-            'billing_locality' => 'nullable|string|max:255',
-            'billing_city' => 'nullable|string|max:255',
-            'billing_state' => 'nullable|string|max:255',
-            'billing_country' => 'nullable|string|max:255',
-            'delivery_pin_code' => 'nullable|string|max:10',
-            'delivery_building_no' => 'nullable|string|max:255',
-            'delivery_area' => 'nullable|string|max:255',
-            'delivery_landmark' => 'nullable|string|max:255',
-            'delivery_locality' => 'nullable|string|max:255',
-            'delivery_city' => 'nullable|string|max:255',
-            'delivery_state' => 'nullable|string|max:255',
-            'delivery_country' => 'nullable|string|max:255',
-            'term_condition' => 'nullable|string',
-            'products' => 'nullable|array', // Allow empty products for drafts
-            'products.*.pro_id' => 'nullable|string|max:255',
-            'products.*.qty' => 'required_with:products|numeric|min:1',
-            'products.*.mrp' => 'required_with:products|numeric|min:0',
-            'products.*.pro_image_path' => 'nullable|string|max:255',
-            'products.*.description_head' => 'nullable|string|max:255',
-            'products.*.pro_dec' => 'nullable|string',
-            'products.*.hsn_code' => 'nullable|string|max:50',
-            'remark' => 'nullable|string',
-            'next_date' => 'nullable|date',
-            'activity' => 'nullable|string',
-            'packaging' => 'nullable|numeric',
-            'loading' => 'nullable|numeric',
-            'transport' => 'nullable|numeric',
-            'unloading' => 'nullable|numeric',
-            'installation' => 'nullable|numeric',
-            'gst_sgst_per' => 'nullable|numeric',
-            'gst_cgst_per' => 'nullable|numeric',
-            'gst_igst_per' => 'nullable|numeric',
-            'gst_service_sgst_per' => 'nullable|numeric',
-            'gst_service_cgst_per' => 'nullable|numeric',
-            'advance' => 'nullable|numeric',
-            'transport_in_product' => 'nullable|numeric',
-            'transport_type' => 'nullable|string|max:50',
-        ]);
-
-        if ($validator->fails()) {
-            Log::error('Quotation Update Validation Failed: ', $validator->errors()->toArray());
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $validatedData = $validator->validated();
-
-        DB::beginTransaction();
-        try {
-            // Check if the quotation with the provided quot_no actually exists before deleting.
-            // This prevents deleting the wrong records if the quot_no in URL is invalid.
-            $existingQuotation = Quotation::on('scomfort')->where('quot_no', $quot_no)->first();
-
-            // Agar quotation mila hi nahi, to error do.
-            if (!$existingQuotation) {
-                DB::rollBack();
-                return response()->json(['message' => 'Original quotation not found for update.'], 404);
-            }
-
-            // Uska purana quot_id ek variable mein save kar lo.
-            $existingQuotId = $existingQuotation->quot_id;
-
-            // Your manager's 'delete-and-recreate' logic for updating
-        // Delete all existing product rows for this quot_no
-        Quotation::on( 'scomfort' )->where( 'quot_no', $quot_no )->delete();
-
-        // Your manager's original company creation logic (UNCHANGED)
-            $companyId = $validatedData['customer_id'] ?? null;
-
-            if (empty($companyId) && !empty($validatedData['company_name'])) {
-                $company = StsCompany::firstOrCreate(
-                    ['company_name' => $validatedData['company_name']],
-                    [
-                        // Ensure all required fields for StsCompany are present, even if empty string/0
-                        'inactive_status' => 0,
-                        'merge_id' => 0,
-                        'account_id' => 0,
-                        'master_customer_id' => 0,
-                        'contact_person' => '',
-                        'contact_no1' => '',
-                        'contact_no2' => '',
-                        'address' => '',
-                        'billing_pin_code' => '',
-                        'billing_building_no' => '',
-                        'billing_area' => '',
-                        'billing_landmark' => '',
-                        'billing_locality' => '',
-                        'billing_city' => '',
-                        'billing_state' => '',
-                        'billing_country' => '',
-                        'billing_person_name' => '',
-                        'billing_person_contact' => '',
-                        'delivery_person_name' => '',
-                        'delivery_person_contact' => '',
-                        'delivery_address' => '',
-                        'delivery_building_no' => '',
-                        'delivery_area' => '',
-                        'delivery_landmark' => '',
-                        'delivery_locality' => '',
-                        'delivery_city' => '',
-                        'delivery_state' => '',
-                        'delivery_country' => '',
-                        'city' => '',
-                        'state' => '',
-                        'country' => '',
-                        'website' => '',
-                        'email' => '',
-                        'summary' => '',
-                        'transaction_id' => '',
-                        'cst_no' => '',
-                        'tan_no' => '',
-                        'tin_no' => '',
-                        'pan_no' => '',
-                        'aadhar_card' => '',
-                        'pin_code' => '',
-                        'customer_type' => '',
-                        'opening_type' => '',
-                        'opening_bal' => 0,
-                        'arn_no' => '',
-                        'created_id' => 0,
-                        'created_date' => now(),
-                        'account_approval' => 0,
-                        'company_rep' => 0,
-                        'edited_date_time' => now(),
-                        'created_emp_id' => 0,
-                        'last_workout_date' => now(),
-                        'workout_type' => '',
-                        'last_workout_by' => '',
-                        'workout_id' => '',
-                        'source_assign_by' => 0,
-                        'source_generated' => '',
-                        'primary_billing_address_id' => 0,
-                        'primary_delivery_address_id' => 0,
-                        'multiple_contact_info' => '',
-                        'vendor_no' => '',
-                        'location_data' => '',
-                        'comp_follow_status' => '',
-                        'comp_next_date' => now(),
-                        'comp_activity_remark' => '',
-                        'comp_activity_assign_to' => 0,
-                        'comp_meeting_time' => '00:00:00',
-                        'comp_meeting_date' => now(),
-                        'comp_meeting_location' => '',
-                        'comp_activity_order_value' => 0,
-                        'comp_activity_priority' => '',
-                        'comp_last_wo_date' => now(),
-                        'comp_last_wo_id' => 0,
-                        'comp_last_wo_no' => 0,
-                        'comp_last_wo_type' => '',
-                        'comp_order_data' => '',
-                    ]
-                );
-                $companyId = $company->id;
-            }
-
-            // Your manager's original quotation data preparation ( UNCHANGED )
-        $mainDetails = $validatedData;
-        $mainDetails[ 'customer_id' ] = $companyId;
-        // Link to StsCompany customer ID
-        $mainDetails[ 'status' ] = $validatedData[ 'status' ] ?? 'draft';
-        $mainDetails[ 'quot_id' ] = $existingQuotId;
-        // Unset company_name if it's only for StsCompany lookup and not a direct column on Quotation
-            // Based on your previous schema, it *is* a direct column, so ensure it's handled.
-        // If 'company_name' is a direct column on 'quotation', don't unset it.
-            // Otherwise, unset if it's strictly for StsCompany lookup.
-        // For now, I'll assume it's directly on the quotation table.
-        unset( $mainDetails[ 'company_name' ] );
-        // REMOVE this line if company_name is a direct column
-        $numericFields = [
-            'packaging',
-            'loading',
-            'transport',
-            'unloading',
-            'installation',
-            'gst_sgst_per',
-            'gst_cgst_per',
-            'gst_igst_per',
-            'gst_service_sgst_per',
-            'gst_service_cgst_per',
-            'advance',
-            'transport_in_product'
-        ];
-
-        foreach ( $numericFields as $field ) {
-            if ( !isset( $mainDetails[ $field ] ) ) {
-                $mainDetails[ $field ] = 0;
-            }
-        }
-
-        $products = $mainDetails[ 'products' ] ?? [];
-        unset( $mainDetails[ 'products' ] );
-
-        // If no products are provided, insert a single row with main details
-        if ( empty( $products ) ) {
-            $rowData = array_merge(
-                $this->getDefaultRowData(),
-                $mainDetails,
-                // Ensure core fields from request are used even if no products
-                [ 'quot_no' => $validatedData[ 'quot_no' ], 'date' => $validatedData[ 'date' ] ]
-            );
-            // Set edited timestamp and user for non-product specific updates
-            // $rowData[ 'edited_date_time' ] = now();
-            // $rowData[ 'edited_by' ] = auth()->id();
-            // Uncomment if you have auth
-
-            Quotation::on( 'scomfort' )->create( $rowData );
-        } else {
-            // Your manager's original loop for creating a quotation row per product
-                foreach ($validatedData['products'] as $productData) {
-                    $qty = $productData['qty'] ?? 1;
-                    $mrp = $productData['mrp'] ?? 0;
-                    $discount = $productData['discount'] ?? 0;
-                    $discount_per = $productData['discount_per'] ?? 0;
-                    $subtotal = $qty * $mrp;
-                    $calculatedTotal = $subtotal;
-                    if ($discount_per > 0) {
-                        $calculatedTotal -= ($calculatedTotal * $discount_per / 100);
-                    } else if ($discount > 0) {
-                        $calculatedTotal -= $discount;
-                    }
-                    if ($calculatedTotal < 0)
-                        $calculatedTotal = 0;
-                    $productData['total'] = round(max(0, $calculatedTotal), 2);
-                    $productData['pro_image'] = $productData['pro_image_path'] ?? null;
-                    unset($productData['pro_image_path']);
-
-                    $rowData = array_merge(
-                        $this->getDefaultRowData(),
-                        $mainDetails,
-                        $productData
-                    );
-
-                    $rowData['quot_no'] = $validatedData['quot_no']; // Ensure the correct quot_no is used for the update
-                    $rowData['date'] = $validatedData['date'];
-                    // $rowData['edited_date_time'] = now(); // Set edited timestamp
-                    // $rowData['edited_by'] = auth()->id(); // Uncomment if you have auth
-
-                    Quotation::on('scomfort')->create($rowData);
-                }
-            }
-
-            DB::connection('scomfort')->commit();
-
-            return response()->json([
-                'message' => 'Quotation updated successfully!',
-                'quot_no' => $quot_no,
-                'status' => $validatedData['status'] ?? 'draft'
-            ]);
-
-        } catch (ValidationException $e) {
-            DB::connection('scomfort')->rollBack();
-            Log::error('Failed to update quotation: ' . $e->getMessage(), ['exception' => $e, 'errors' => $e->errors()]);
-            return response()->json([
-                'message' => 'Failed to update quotation.',
-                'errors' => $e->errors()
-            ], 422);
-        }
+    if ($validator->fails()) {
+        Log::error('Quotation Update/Create Validation Failed: ', $validator->errors()->toArray());
+        return response()->json(['errors' => $validator->errors()], 422);
     }
+
+    $validatedData = $validator->validated();
+    
+    $textColumns = [
+    'term_condition', 'transport_type', 'activity', 'remark', 'created_by', 'status',
+    'quotation_status', 'installation_type', 'pro_code', 'pro_image', 'description_head',
+    'pro_dec', 'hsn_code', 'size', 'size1', 'size2', 'colour', 'format', 'color1', 'color2',
+    'rate_remark', 'commission_remark', 'internal_remark', 'balance_approval_sts',
+    'balance_app_remark', 'advance_approval_sts', 'advance_app_remark', 'aggrement_attachment',
+    'work_order_no', 'search_data'
+];
+foreach ($textColumns as $column) {
+    $validatedData[$column] = $validatedData[$column] ?? '';
+}
+    // 👇 YEH POORA BLOCK ADD KARNA HAI 👇
+ $numericColumns = [
+    'lead_id', 'packaging', 'loading', 'transport', 'unloading',
+    'installation', 'gst_sgst_per', 'gst_cgst_per', 'gst_igst_per',
+    'gst_service_sgst_per', 'gst_service_cgst_per', 'advance',
+    'transport_in_product', 'employee_id', 'edited_by',
+    'edited_no_of_time', 'sorted_order', 'request_by', 'approve_by',
+    'commission_principle', 'commission_approval_by', 'balance_approval_by',
+    'advance_approval_by', 'subtotal', 'gst_unr_status'
+];
+foreach ($numericColumns as $column) {
+    $validatedData[$column] = $validatedData[$column] ?? 0;
+}
+
+  $dateColumns = [
+            'next_date', 'edited_date', 'last_update', 'quot_temp_date', 'request_datetime', 'approval_dt',
+            'commission_approval_dt', 'balance_app_date', 'advance_app_date', 'expected_delivery_date',
+            'sample_return_date', 'sample_expected_delivery_date'
+        ];
+        foreach ($dateColumns as $column) {
+            $validatedData[$column] = $validatedData[$column] ?? now();
+        }
+
+    DB::beginTransaction();
+    try {
+        // Step 2: Check if the quotation exists
+        $existingQuotation = Quotation::on('scomfort')->where('quot_no', $quot_no)->first();
+
+        if ($existingQuotation) {
+            // IF IT EXISTS: Normal update path. Get its quot_id and delete old rows.
+            $quotIdToUse = $existingQuotation->quot_id;
+            Quotation::on('scomfort')->where('quot_no', $quot_no)->delete();
+        } else {
+            // IF IT DOES NOT EXIST: Create path. Generate a new quot_id.
+            $latest = Quotation::on('scomfort')->orderBy('quot_id', 'desc')->first();
+            $quotIdToUse = ($latest) ? $latest->quot_id + 1 : 1;
+        }
+
+        // Step 3: Handle Company ID (This is your original logic, it's correct)
+        $companyId = $validatedData['customer_id'] ?? null;
+        if (empty($companyId) && !empty($validatedData['company_name'])) {
+            $company = StsCompany::firstOrCreate(
+                ['company_name' => $validatedData['company_name']],
+                [
+                    'inactive_status' => 0, 'merge_id' => 0, 'account_id' => 0,
+                    'master_customer_id' => 0, 'contact_person' => $validatedData['contact_person_name'] ?? '',
+                    'contact_no1' => $validatedData['contact_no'] ?? '', 'contact_no2' => '',
+                    'address' => $validatedData['address'] ?? '', 'email' => $validatedData['email_id'] ?? '',
+                    'billing_pin_code' => $validatedData['billing_pin_code'] ?? '',
+                    'billing_building_no' => $validatedData['billing_building_no'] ?? '',
+                    'billing_area' => $validatedData['billing_area'] ?? '',
+                    'billing_landmark' => $validatedData['billing_landmark'] ?? '',
+                    'billing_locality' => $validatedData['billing_locality'] ?? '',
+                    'billing_city' => $validatedData['billing_city'] ?? '',
+                    'billing_state' => $validatedData['billing_state'] ?? '',
+                    'billing_country' => $validatedData['billing_country'] ?? '',
+                    'delivery_pin_code' => $validatedData['delivery_pin_code'] ?? '',
+                    'delivery_building_no' => $validatedData['delivery_building_no'] ?? '',
+                    'delivery_area' => $validatedData['delivery_area'] ?? '',
+                    'delivery_landmark' => $validatedData['delivery_landmark'] ?? '',
+                    'delivery_locality' => $validatedData['delivery_locality'] ?? '',
+                    'delivery_city' => $validatedData['delivery_city'] ?? '',
+                    'delivery_state' => $validatedData['delivery_state'] ?? '',
+                    'delivery_country' => $validatedData['delivery_country'] ?? '',
+                    'created_date' => now(), 'edited_date_time' => now(), 'last_workout_date' => now(),
+                    // Add other defaults as necessary to prevent SQL errors
+                ]
+            );
+            $companyId = $company->id;
+        }
+
+        // Step 4: Create/re-create the quotation rows
+        $mainDetails = $validatedData;
+        $mainDetails['customer_id'] = $companyId;
+        $mainDetails['status'] = $validatedData['status'] ?? 'draft';
+        $mainDetails['quot_id'] = $quotIdToUse;
+
+        unset($mainDetails['company_name']);
+        $products = $mainDetails['products'] ?? [];
+        unset($mainDetails['products']);
+
+        $defaultRowData = $this->getDefaultRowData();
+
+        if (empty($products)) {
+            $rowData = array_merge($defaultRowData, $mainDetails);
+            Quotation::create($rowData);
+        } else {
+            foreach ($validatedData['products'] as $productData) {
+                // Your product calculation logic
+                $qty = $productData['qty'] ?? 1;
+                $mrp = $productData['mrp'] ?? 0;
+                $discount = $productData['discount'] ?? 0;
+                $discount_per = $productData['discount_per'] ?? 0;
+                $subtotal = $qty * $mrp;
+                $calculatedTotal = $subtotal;
+                if ($discount_per > 0) {
+                    $calculatedTotal -= ($calculatedTotal * $discount_per / 100);
+                } elseif ($discount > 0) {
+                    $calculatedTotal -= $discount;
+                }
+                $productData['total'] = round(max(0, $calculatedTotal), 2);
+                $productData['pro_image'] = $productData['pro_image_path'] ?? null;
+                unset($productData['pro_image_path']);
+
+                $rowData = array_merge($defaultRowData, $mainDetails, $productData);
+                Quotation::create($rowData);
+            }
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'message' => 'Quotation saved successfully!',
+            'quot_no' => $validatedData['quot_no'],
+            'status' => $validatedData['status'] ?? 'draft'
+        ], 200);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Log::error('Failed to save quotation in update/create logic: ', ['error' => $e->getMessage()]);
+        return response()->json(['message' => 'Failed to save quotation on the server.', 'error' => $e->getMessage()], 500);
+    }
+}
 
     // in app/Http/Controllers/QuotationController.php
 
@@ -947,11 +908,16 @@ public function deleteQuotationImage( Request $request ) {
         */
 
         private function getDefaultRowData() {
+
+           $lastRecord = Quotation::on('scomfort')->orderBy('id', 'desc')->first();
+    $nextId = ($lastRecord) ? $lastRecord->id + 1 : 1;
+
             return [
                 // <<< YAHAN PAR CHANGE KIYA GAYA HAI >>>
-                'id' => 0, // Added default value for the 'id' field
+                 // Added default value for the 'id' field
 
                 // Numerical/ID fields - Set sensible defaults ( 0 or null )
+                'id' => $nextId,
                 'lead_id' => 0,
                 'quot_id' => null,
                 'customer_id' => 0,
@@ -999,7 +965,7 @@ public function deleteQuotationImage( Request $request ) {
                 'balance' => 0,
                 'commission_per' => 0,
                 'commission_amount' => 0,
-
+                's_no' => 1, 
                 // String/Text fields - Set sensible defaults ( empty strings or 'no' for flags )
                 'type' => 'Lead',
                 'created_source' => 'WEBERP',
@@ -1133,6 +1099,7 @@ public function deleteQuotationImage( Request $request ) {
                 'ledger_perfo' => 0,
                 'chairs_service' => 0,
                 'modular_service' => 0,
+                'last_update' => now(),
 
                 // Date/Datetime fields ( null defaults )
                 'date' => null,
@@ -1147,7 +1114,8 @@ public function deleteQuotationImage( Request $request ) {
                 'expected_delivery_date' => null,
                 'sample_return_date' => null,
                 'sample_expected_delivery_date' => null,
-                's_no' => null, // Serial number field
+                
+                // Serial number field
             ];
         }
     }

@@ -184,10 +184,12 @@ const CreateView = () => {
 
     });
 
+
     const [products, setProducts] = useState<ProductItemData[]>([]);
 
     // Effect to determine mode (create/edit) and fetch initial data
     useEffect(() => {
+        // This part handles EDIT mode when a quot_no is in the URL. It's already correct.
         if (quot_no) {
             setIsEditMode(true);
             setSavedQuotNo(quot_no);
@@ -197,8 +199,9 @@ const CreateView = () => {
                     const response = await axios.get(`${API_BASE}/quotations/${quot_no}`);
                     const fetchedData = response.data.data;
 
+                    // Your existing logic to set form data for editing is correct
                     setFormData(prev => ({
-                        ...prev, // Keep new fields from initial state
+                        ...prev,
                         quotation_id: fetchedData.quotation_id?.toString() || '',
                         quot_no: fetchedData.quot_no || '',
                         lead_id: fetchedData.lead_id?.toString() || '',
@@ -227,7 +230,6 @@ const CreateView = () => {
                         status: fetchedData.status || 'draft',
                         term_condition: fetchedData.term_condition || '',
                         quotation_sub: fetchedData.quotation_sub || '',
-                        // Also populate total fields from fetched data if they exist
                         packaging: Number(fetchedData.packaging) || 0,
                         loading: Number(fetchedData.loading) || 0,
                         transport: Number(fetchedData.transport) || 0,
@@ -256,11 +258,70 @@ const CreateView = () => {
                 }
             };
             fetchQuotationData();
-        } else {
-            // ... your create mode logic remains the same ...
         }
-    }, [quot_no, navigate]);
-
+        // This part handles CREATE mode when there is NO quot_no in the URL.
+        else {
+            // This `else` block RESETS the form to its initial, empty state
+            setIsEditMode(false);
+            setSavedQuotNo(null);
+            setProducts([]);
+            setFormData({
+                quotation_id: '',
+                quot_no: '',
+                lead_id: '',
+                date: new Date().toISOString().split('T')[0],
+                company_name: '',
+                contact_person_name: '',
+                customer_id: '',
+                contact_no: '',
+                email_id: '',
+                address: '',
+                billing_pin_code: '',
+                billing_building_no: '',
+                billing_area: '',
+                billing_landmark: '',
+                billing_locality: '',
+                billing_city: '',
+                billing_state: '',
+                billing_country: '',
+                delivery_pin_code: '',
+                delivery_building_no: '',
+                delivery_area: '',
+                delivery_landmark: '',
+                delivery_locality: '',
+                delivery_city: '',
+                delivery_state: '',
+                delivery_country: '',
+                status: 'draft',
+                term_condition: '',
+                quotation_sub: '',
+                sub_total: 0,
+                packaging: '',
+                loading: '',
+                transport: '',
+                unloading: '',
+                installation: '',
+                gst_sgst_per: '',
+                sgst_amount: 0,
+                gst_cgst_per: '',
+                cgst_amount: 0,
+                gst_igst_per: '',
+                igst_amount: 0,
+                gst_service_sgst_per: '',
+                service_sgst_amount: 0,
+                gst_service_cgst_per: '',
+                service_cgst_amount: 0,
+                grand_total: 0,
+                advance: '',
+                balance: 0,
+                remark: '',
+                next_date: '',
+                activity: '',
+                transport_type: '',
+                transport_in_product: '',
+            });
+        }
+    }, [quot_no]); 
     // Auto-save logic
     useEffect(() => {
         if (!isEditMode && (!formData.quot_no && !formData.company_name)) {

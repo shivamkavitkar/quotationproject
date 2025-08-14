@@ -6,6 +6,7 @@ const PORT = 3039;
 
 export default defineConfig({
   plugins: [react()],
+  base: './',
   resolve: {
     alias: [
       {

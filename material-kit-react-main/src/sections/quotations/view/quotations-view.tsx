@@ -287,12 +287,12 @@ const QuotationsView = () => {
                                                                         <span>{item.grand_total?.toLocaleString('en-IN') ?? '0'}</span>
                                                                     </div>
                                                                     <div className="history-col">
-                                                                        <Link to={`/quotations/preview/${encodeURIComponent(item.quot_no)}`} className="action-icon" title="Print">
+                                                                        <Link to={`/quotation/preview/${encodeURIComponent(item.quot_no)}`} className="action-icon" title="Print">
                                                                             <FontAwesomeIcon icon={faPrint} />
                                                                         </Link>
                                                                     </div>
                                                                     <div className="history-col">
-                                                                        <Link to={`/quotations/edit/${encodeURIComponent(item.quot_no)}`} className="action-icon" title="Edit">
+                                                                        <Link to={`/quotation/edit/${encodeURIComponent(item.quot_no)}`} className="action-icon" title="Edit">
                                                                             <FontAwesomeIcon icon={faPencilAlt} />
                                                                         </Link>
                                                                     </div>

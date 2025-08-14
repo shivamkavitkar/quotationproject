@@ -77,3 +77,6 @@ Route::get('/categories', [ProductController::class, 'getCategories']);
 Route::get('/categories/{categoryId}/subcategories', [ProductController::class, 'getSubcategories']);
 
 
+// Add this line to your routes/api.php
+
+Route::get('/companies/autocomplete', [App\Http\Controllers\StsCompanyController::class, 'autocomplete']);
