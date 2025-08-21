@@ -12,7 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { ProductItem } from '../../item';
 
-const API_BASE = '/api';
+const API_BASE = 'https://acutesolution.in/api';
 
 // --- Type Definitions ---
 interface ProductItemData {
