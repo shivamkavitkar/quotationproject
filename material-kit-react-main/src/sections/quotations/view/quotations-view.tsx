@@ -9,7 +9,7 @@ import { faEye, faPlus, faTrash, faTimes, faPrint, faHistory, faPencilAlt } from
 
 import { Searchbar } from '../../../layouts/components/searchbar';
 
-const API_BASE = '/api';
+const API_BASE = 'https://acutesolution.in/api';
 
 // --- Type Interfaces ---
 interface QuotationHistoryItem {
