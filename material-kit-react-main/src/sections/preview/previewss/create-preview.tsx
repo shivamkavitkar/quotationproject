@@ -74,7 +74,7 @@ interface FullQuotationResponseData extends QuotationHeaderData {
 }
 // --- End Type Definitions ---
 
-const API_BASE = '/api'; // Using Vite proxy. Keep this as '/api'.
+const API_BASE = 'https://acutesolution.in/api'; // Using Vite proxy. Keep this as '/api'.
 
 const PreviewView = () => { // Or CreatePreviewView depending on your current exact component name
     const { quot_no } = useParams<{ quot_no: string }>();
