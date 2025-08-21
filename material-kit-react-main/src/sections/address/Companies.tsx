@@ -16,7 +16,7 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import CircularProgress from '@mui/material/CircularProgress';
 
-const API_BASE = '/api';
+const API_BASE = 'https://acutesolution.in/api';
 
 interface Company {
   id: number;
